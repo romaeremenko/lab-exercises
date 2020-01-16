@@ -1,0 +1,249 @@
+// Write a JavaScript program to find all elements in a given array except for the first one. 
+// Return the whole array if the array's length is 1
+
+const modif = arr => arr.length > 1 ? arr.slice(1) : arr;
+console.log(modif([1, 2, 3])); 
+console.log(modif([1]));
+
+// Write a JavaScript program to get the sum of a given array, after
+// mapping each element to a value using the provided function.
+
+const sumBy = (arr, fn) => {
+  if(typeof fn === 'function') {
+   	 return arr.map(el => fn(el)).reduce((acc, val)=> acc + val, 0);
+  } else {
+  return arr.map(el => el[fn]).reduce((acc, val)=> acc + val, 0);
+  }
+}
+
+console.log(sumBy([{ n: 4 }, { n: 2 }, { n: 8 }, { n: 6 }], o => o.n));
+console.log(sumBy([{ n: -4 }, { n: -2 }, { n: 8 }, { n: 6 }], 'n'));
+
+// Write a JavaScript program to get a random number in the specified range. 
+
+const randFromRange = (min, max) => Math.random() * (max - min) + min;
+console.log(randFromRange(2, 10)); 
+console.log(randFromRange(1, 5)); 
+console.log(randFromRange(-5, -2)); 
+console.log(randFromRange(0, 1));
+
+// Write a JavaScript program to get a random integer in the specified range.
+
+const randFromRange = (min, max) => Math.floor(Math.random() * (max - min)) + min;
+console.log(randFromRange(2, 10)); 
+console.log(randFromRange(1, 5)); 
+console.log(randFromRange(-5, -2)); 
+console.log(randFromRange(0, 1));
+
+//  Write a JavaScript program to get an array of given n random integers in the specified range.
+
+const randomArrayFromRange = (min, max, n) => {
+  let arr = [];
+	for(let i = 0; i < n; i++){
+    arr.push(Math.floor(Math.random() * (max - min + 1)) + min);
+  }  
+  return arr;
+};
+
+console.log(randomArrayFromRange(1, 20, 10));
+console.log(randomArrayFromRange(-10, 10, 5));
+
+// Write a JavaScript program to create a function that invokes each provided 
+// function with the arguments it receives and returns the results.
+
+const orderBy = (arr, props, orders) =>
+  [...arr].sort((a, b) =>
+    props.reduce((acc, prop, i) => {
+      if (acc === 0) {
+        const [p1, p2] = orders && orders[i] === 'desc' ? [b[prop], a[prop]] : [a[prop], b[prop]];
+        acc = p1 > p2 ? 1 : p1 < p2 ? -1 : 0;
+      }
+      return acc;
+    }, 0)
+  );
+const users = [{ name: 'fred', age: 48 }, { name: 'barney', age: 36 }, { name: 'fred', age: 40 }];
+
+console.log(orderBy(users, ['name', 'age'], ['asc', 'desc'])); 
+console.log(orderBy(users, ['name', 'age']));
+
+// Write a JavaScript program to pad a string on both sides with the specified character,
+// if it's shorter than the specified length.
+
+const pad = (str, length, char) => str.padStart((str.length + length) / 2, char).padEnd(length, char);
+console.log(pad('cat', 8));
+console.log(pad(String(42), 6, '0'))
+console.log(pad('foobar', 3))
+
+// Write a JavaScript program to remove the key-value pairs corresponding to the given keys from an object.
+
+const omit = (obj, arr) =>
+  Object.keys(obj)
+   .filter( obj => !arr.includes(obj))
+	 .reduce((acc, key)=> ((acc[key] = obj[key]), acc),{});
+
+console.log(omit({ a: 1, b: '2', c: 3 }, ['b']));
+console.log(omit({ a: 1, b: 2, c: 3 }, ['c']));
+
+// Write a JavaScript program to create an array of key-value pair arrays from a given object.
+
+const object_to_pairs = obj => Object.keys(obj).reduce((acc, sum) => acc.concat([[sum, obj[sum]]]),[]);
+console.log(object_to_pairs({ a: 1, b: 2 }));
+console.log(object_to_pairs({ a: 1, b: 2, c: 3 }));
+
+// Write a JavaScript program to create an object from the given key-value pairs.
+
+const createObject = arr => arr.reduce((a,v) => (a[v[0]] = v[1], a),{})
+console.log(createObject([['a', 1], ['b', 2]])); 
+console.log(createObject([[1, 10], [2, 20], [3, 30]]));
+
+// Write a JavaScript program to get a customized coalesce function that returns the first argument 
+// that returns true from the provided argument validation function.
+
+const coalesceFactory = valid => (...args) => args.find(valid);
+const customCoalesce = (a) = coalesceFactory(a => ![null, undefined, '', NaN].includes(a));
+console.log(customCoalesce(undefined, null, NaN, '', 'Waldo'));
+
+// Write a JavaScript program to remove falsey values from a given array.
+
+function removeFalsey(arr) {
+	return arr.filter(Boolean);
+}
+console.log(compact([0, 1, false, 2, '', 3, 'a', 'e' * 23, NaN, 's', 34]));
+console.log(compact([false, NaN, 'e' * 23]));
+
+// Write a JavaScript program to split values into two groups, if an element in filter is truthy, the corresponding element
+//  in the collection belongs to the first group; otherwise, it belongs to the second group.
+
+const bifurcate = (arr, filter) => [[arr.filter((el,i) => filter[i])],[arr.filter((el,i) => !filter[i])]];
+
+console.log(bifurcate(['beep', 'boop', 'foo', 'bar'], [true, true, false, true]));
+
+// Write a JavaScript program to perform a deep comparison between two values to determine if they are equivalent.
+//
+// Note: Check if the two values are identical, if they are both Date objects with the same time, using Date.getTime() 
+// or if they are both non-object values with an equivalent value (strict comparison). Check if only one value is null 
+// or undefined or if their prototypes differ. If none of the above conditions are met, use Object.keys() to check if 
+// both values have the same number of keys, then use Array.every() to check if every key in the first value exists in 
+// the second one and if they are equivalent by calling this method recursively.
+
+const equals = (a, b) => {
+  if (a === b) return true;
+  if (a instanceof Date && b instanceof Date) return a.getTime() === b.getTime();
+  if (!a || !b || (typeof a !== 'object' && typeof b !== 'object')) return a === b;
+  if (a === null || a === undefined || b === null || b === undefined) return false;
+  if (a.prototype !== b.prototype) return false;
+  if (Object.keys(a).length !== Object.keys(b).length) return false;
+  return keys.every(k => equals(a[k], b[k]));
+};
+
+console.log(equals({ a: [2, { e: 3 }], b: [4], c: 'foo' }, { a: [2, { e: 3 }], b: [4], c: 'foo' }));
+
+// Write a JavaScript program to get an array of function property names from own (and optionally inherited) enumerable properties of an object.
+
+const getPropertyNames = (obj, inherited = false) => inherited
+    ? [...Object.keys(obj), ...Object.keys(Object.getPrototypeOf(obj))]
+    : Object.keys(obj);
+
+function Foo() {
+  this.a = 1;
+}
+
+Foo.prototype.c = () => 3;
+
+console.log(getPropertyNames(new Foo()));
+console.log(getPropertyNames(new Foo(), true));
+
+// Write a JavaScript program to convert an integer to a suffixed string, adding am or pm based on its value.
+
+const getTime = num => {
+  if(num === 0 || num === 24) {
+     return 12 + 'am';
+  } else if(num === 12) {
+  	 return 12 + 'pm'; 
+  } else if(num < 12) {
+  	 return (num % 12) + 'am'; 
+  } else {
+    return (num % 12) + 'pm'; 
+  }  
+} 
+
+console.log(getTime(0));
+console.log(getTime(11));
+console.log(getTime(13));
+console.log(getTime(25));
+
+// Write a JavaScript program to get an object containing the parameters of the current URL.
+
+ const get_URL_Parameters = url =>
+  (url.match(/([^?=&]+)(=([^&]*))/g) || []).reduce(
+    (a, v) => ((a[v.slice(0, v.indexOf('='))] = v.slice(v.indexOf('=') + 1)), a),
+    {}
+  );
+console.log(get_URL_Parameters('http://url.com/page?name=Adam&surname=Smith')); 
+console.log(get_URL_Parameters('google.com'));
+console.log(get_URL_Parameters('https://www.w3resource.com'));
+
+// Write a JavaScript program to group the elements of a given array based on the given function.
+
+const group_By = (arr, fn) => arr.map(fn).reduce((acc, val, i) => { acc[val] = (acc[val] || []).concat(arr[i]); return acc}, {});
+console.log(group_By([6.1, 4.2, 6.3], Math.sqrt)); 
+console.log(group_By([6.1, 4.2, 6.3], Math.floor));
+
+// Write a JavaScript program to Initialize a two dimension array of given width and height and value.
+
+const initializeArray = (w, h, val = null) => Array.from({ length: h }).map(each => Array.from({ length: w }).fill(val));
+
+console.log(initializeArray(2, 2, 0));
+console.log(initializeArray(3, 3, 3));
+
+// Write a JavaScript program to initialize an array containing the numbers in the specified range
+// where start and end are inclusive with their common difference step.
+
+const initializeArrayWithRange = (end, start =  0, step = 1) => Array.from({ length: Math.ceil((end+1-start)/step)}).map((v, i) => i * step + start);
+
+console.log(initializeArrayWithRange(8)); 
+console.log(initializeArrayWithRange(12, 7));  
+console.log(initializeArrayWithRange(9, 0, 3));  
+
+// Write a JavaScript program to check whether all elements in a given array are equal or not.
+
+const equals = arr => arr.every(val => val === arr[0]);
+console.log(equals([1, 2, 3, 4, 5, 6]));
+console.log(equals([12, 12, 12, 12]));
+
+// Write a JavaScript program to compute the average of an array, after mapping each element to a value using the provided function.
+
+const average = (arr, fn) => arr.map(typeof fn === 'function' ? fn : el => el[fn]).reduce((accumulation, el) => accumulation + el) / arr.length;
+
+console.log(average([{ a: 40 }, { a: 20 }, { a: 80 }, { a: 60 }], o => o.a));
+console.log(average([{ a: 4 }, { a: 2 }, { a: 8 }, { a: 6 }], 'a'));
+
+// Write a JavaScript program to split values into two groups according to a predicate
+// function, which specifies which group an element
+// in the input collection belongs to.
+
+// If the predicate function returns a truthy value, the collection element belongs to the first group;
+// otherwise, it belongs to the second group.
+
+const bifurcateBy = (arr, fn) => [arr.filter(fn),arr.filter(el => !fn(el))];
+ 
+console.log(bifurcateBy(['beep', 'boop', 'foo', 'bar'], x => x[0] === 'b'));
+
+// Write a JavaScript program to create a function that invokes the method at a given key of an object, 
+// optionally adding any additional supplied parameters to the beginning of the arguments.
+
+function bindKey(context, fn, ...param){
+  return function() {
+    return context[fn].apply(context, param.concat(...arguments));
+  };
+}  
+
+const freddy = {
+  user: 'fred',
+  greet: function(greeting, punctuation) {
+    return greeting + ' ' + this.user + punctuation;
+  }
+};
+const freddyBound = bindKey(freddy, 'greet');
+console.log(freddyBound('hi', '!'));
+
