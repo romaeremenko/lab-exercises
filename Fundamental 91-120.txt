@@ -1,0 +1,171 @@
+// Write a JavaScript program that will return  true if the provided predicate function returns
+// false for all elements in a collection, false otherwise.
+
+const none = (arr, fn) => !arr.every(fn);
+console.log(none([0, 1, 3, 0], x => x == 2));
+console.log(none([0, 0, 0], x => x == 0));
+
+// Write a JavaScript program to remove an event listener from an element.
+
+var div = document.getElementById('div');
+var listener = function (event) {
+  console.log('aaaa');
+};
+div.addEventListener('click', listener, false);
+div.removeEventListener('click', listener, false);
+
+// Write a JavaScript program to move the specified amount of elements to the end of the array.
+
+const offset = (arr, offset) => arr.slice(offset).concat(arr.slice(0, offset));
+
+console.log(offset([1, 2, 3, 4, 5], 2));
+console.log(offset([1, 2, 3, 4, 5], -2));
+
+// Write a JavaScript program to pick  the key-value pairs corresponding to the given keys from an object.
+
+const pick = (obj, arr) => Object.keys(obj).filter(el => arr.includes(el)).reduce((acc, val) =>{acc[val] = obj[val]; return acc}, {});
+console.log(pick({ a: 1, b: '2', c: 3 }, ['a', 'c']));
+
+// Write a JavaScript program to create an object composed of the properties the given function returns truthy for. 
+// The function is invoked with two arguments: (value, key).
+
+const pick = (obj, fn) => 
+Object.values(obj).filter(fn).reduce((acc, val) =>{acc[Object.keys(obj).find(key => obj[key] === val)] = val; return acc}, {});
+
+console.log(pick({ a: 1, b: '2', c: 3 }, x => typeof x === 'number'));
+
+// Write a JavaScript program to filter an array of objects based on a condition while also filtering out unspecified keys.
+
+const filter = (data, keys, fn) => data.filter(fn).map(el => keys.reduce((acc, key) => {acc[key] = el[key]; return acc}, {}));
+  
+const data = [
+  {
+    id: 1,
+    age: 24
+  },
+  {
+    id: 2,
+    age: 50
+  }
+];
+
+console.log(filter(data, ['id', 'name'], item => item.age > 24));
+
+// Write a JavaScript program to return the object associating the properties to the values of a given
+// array of valid property identifiers and an array of values.
+
+const getObj = (props, values) => props.reduce((acc, val,index) => {acc[val] = values[index]; return acc;}, {});
+console.log(getObj(['a', 'b', 'c'], [1, 2])); 
+console.log(getObj(['a', 'b'], [1, 2, 3]));
+
+// Write a JavaScript program to convert a given string into an array of words.
+
+const convert = str => str.split(/[^a-zA-Z-]+/).filter(el => el.length)
+console.log(convert('I love javaScript!!')); 
+console.log(convert('python, java, php'));
+
+// Write a JavaScript program to test a value, x, against a predicate function. If true, return fn(x). Else, return x.
+
+function doubleEvenNumbers(number) {
+	return number % 2 === 0 ? number * 2 : number;
+}  
+
+console.log(doubleEvenNumbers(2));
+console.log(doubleEvenNumbers(1));
+
+// Write a JavaScript program that return true if the given value is a number, false otherwise
+
+const isNumber = n => !!Number(n);
+console.log(isNumber('200'));
+console.log(isNumber('10'));
+console.log(isNumber('abc'));
+
+// Write a JavaScript program to get all unique values (form the right side of the array) of an array,
+// based on a provided comparator function.
+
+function reduceRight(arr, fn){
+  return arr.reduceRight((acc, v) => {
+    if (!acc.some(x => fn(v, x))) acc.push(v);
+    return acc;
+  }, []);
+}
+
+console.log(reduceRight(
+  [
+    { id: 0, value: 'a' },
+    { id: 1, value: 'b' },
+    { id: 2, value: 'c' },
+    { id: 1, value: 'd' },
+    { id: 0, value: 'e' }
+  ],
+  (a, b) => a.id == b.id
+));
+
+// Write a JavaScript program to get all unique values of an array, based on a provided comparator function.
+
+function reduceUnique(arr, fn){
+  return arr.reduce((acc, v) => {
+    if (!acc.some(x => fn(v, x))) acc.push(v);
+    return acc;
+  }, []);
+}
+
+console.log(reduceUnique(
+  [
+    { id: 0, value: 'a' },
+    { id: 1, value: 'b' },
+    { id: 2, value: 'c' },
+    { id: 1, value: 'd' },
+    { id: 0, value: 'e' }
+  ],
+  (a, b) => a.id == b.id
+));
+
+// Write a JavaScript program to get the nth element of a given array.
+
+const nthElement = (arr, n = 0) => n > 0 ? arr[n] : arr[arr.length + n];
+console.log(nthElement(['a', 'b', 'c'], 1));
+console.log(nthElement(['a', 'b', 'b'], -3));
+
+// Write a JavaScript program to get every element that exists in any of the two arrays once.
+
+const onceExists = (a, b) => [...new Set([...a, ...b])];
+console.log(onceExists([1, 2, 3], [4, 3, 2]));
+console.log(onceExists([1, 2, 3], [1, 2, 3]));
+
+// Write a JavaScript program to unescape escaped HTML characters.
+
+const unescapeHTML = (str, replacer = {'&amp;' : '&', '&lt;' : '<', '&gt;': '>', '&#39': "'", '&quot;' : '"'}) => {
+		Object.keys(replacer).forEach((reg) => {
+      			let pattern = new RegExp(reg, 'gm');
+      			str = str.replace(pattern,replacer[reg]);
+    		});
+  		
+		return str;
+} 
+ 
+ 
+console.log(unescapeHTML('&lt;a href=&quot;#&quot;&gt;Me &amp; you&lt;/a&gt;'));
+
+// Write a JavaScript program to check if the predicate (second argument) is truthy on all elements of a collection (first argument).
+
+const isFitPredicate = (elements, prop) => elements.every(obj => obj[prop]);
+console.log(isFitPredicate([{ user: 'Tinky-Winky', sex: 'male' }, { user: 'Dipsy', sex: 'male' }], 'sex'));
+
+// Write a JavaScript program to truncate a string up to a specified length.
+
+function truncate(str, num){
+  return str.length > num ? `${str.slice(0, num > 3 ? num - 3 : num)}...` : str;
+}
+console.log(truncate('truncate', 7));
+
+// Write a JavaScript program to create tomorrow's date in a string representation.
+
+const createTomorrowDay = (time = new Date()) => {
+  time.setDate(time.getDate() + 1);
+  return`${time.getFullYear()}-${String(time.getMonth() + 1).padStart(2, '0')}-${String(time.getDate()).padStart(2, '0')}`;
+};
+
+console.log(createTomorrowDay());
+
+
