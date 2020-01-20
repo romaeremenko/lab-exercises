@@ -1,0 +1,105 @@
+// Write a JavaScript program to convert a value to a safe integer.
+
+const convertToSafeInteger = num =>
+  Math.round(Math.max(Math.min(num, Number.MAX_SAFE_INTEGER), Number.MIN_SAFE_INTEGER));
+
+console.log(convertToSafeInteger('3.2'));
+console.log(convertToSafeInteger(Infinity));
+
+// Write a JavaScript program to convert a string to kebab case.
+
+function toKebabCase(str){
+  return str
+     .match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g)
+    .map(x => x.toLowerCase())
+    .join('-');
+}
+console.log(toKebabCase('some_database_field_name'));
+console.log(toKebabCase('some-javascript-property'));
+
+// Write a JavaScript program to create a specified currency formatting from a given number.
+
+const formatting = (n, c, format = undefined) => new Intl.NumberFormat(format, { style: 'currency', currency: c}).format(n);
+
+console.log(formatting(123456.789, 'EUR', 'de-DE')); 
+console.log(formatting(322342436423.2435, 'JPY', 'ja-JP')); 
+
+// Write a JavaScript program to remove n elements from the end of a given array.
+
+const takeRight = (arr, n = 1) => arr.slice(-n);
+
+console.log(takeRight([1, 2, 3], 2));
+console.log(takeRight([1, 2, 3]));
+
+// Write a JavaScript program to get the symmetric difference between two given arrays.
+
+function symmetricDifference(a, b, difference = []){
+  a.forEach((el1,index) => b[index] === el1 ? true : difference.push(el1));
+  b.forEach((el1,index) => a[index] === el1 ? true : difference.push(el1));
+  return difference;
+};
+
+console.log(symmetricDifference([1, 2, 3], [1, 2, 4]));
+
+// Write a JavaScript program to get the sum of the powers of all the numbers from start to end (both inclusive).
+
+const sumPower = (end, power, start) =>
+  Array(end + 1 - start)
+    .fill(0)
+    .map((x, i) => (i + start) ** power)
+    .reduce((a, b) => a + b, 0);
+
+console.log(sumPower(10, 2, 1));
+console.log(sumPower(10, 3, 5));
+
+// Write a JavaScript program to split a multiline string into an array of lines.
+
+const splitLines = str => str.split(new RegExp('\n','gm'));
+console.log(splitLines('This\nis a\nmultiline\nstring.\n'));
+
+// Write a JavaScript program to sort the characters of a string Alphabetically.
+
+const sortCharactersInString = str => [...str].sort().join('');
+console.log(sortCharactersInString('cabbage'));
+
+// Write a JavaScript program to get an array of elements that appear in both arrays.
+
+const similarity = (firstArray, secondArray) => firstArray.filter(el => secondArray.includes(el));
+console.log(similarity([1, 2, 3], [1, 2, 4]));
+
+// Write a JavaScript program to randomize the order of the values of an array, returning a new array.
+
+function shuffle(array) {
+  let currentIndex = array.length, temporaryValue, randomIndex;
+
+  while (0 !== currentIndex) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
+var arr = [2, 11, 37, 42];
+arr = shuffle(arr);
+console.log(arr);
+
+// Write a JavaScript program to create a shallow clone of an object.
+
+const objClone = obj => Object.assign({}, obj);
+console.log(objClone( { x: true, y: 1 }) == { x: true, y: 1 });  
+
+// Write a JavaScript program to serialize a cookie name-value pair into a Set-Cookie header string.
+
+const serializeCookie = (name, val) => `${name}=${val}`;
+console.log(serializeCookie('foo', 'bar'));
+
+// Write a JavaScript program to get a random element from an array.
+
+const randomValue = arr => arr[Math.floor(Math.random() * arr.length)];
+console.log(randomValue([3, 7, 9, 11]));
+
+// 
